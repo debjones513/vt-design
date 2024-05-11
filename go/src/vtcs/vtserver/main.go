@@ -59,9 +59,6 @@ func loadExe(name string) (*exe_upload.ExeUpload, error) {
 	return ep, nil
 }
 func main() {
-	//eps := loadExe("vtserver_test")
-	//fmt.Println(eps.ExeName)
-	//fmt.Println(eps.ExeBytes)
 
 	// Start the web server
 	http.HandleFunc("/", defaultHandler)
