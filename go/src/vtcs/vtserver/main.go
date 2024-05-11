@@ -1,7 +1,9 @@
 package main
 
 import (
+	"crypto/sha256"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -13,25 +15,46 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
+
 	object_name := r.URL.Path[len("/upload/"):]
 	p, _ := loadExe(object_name)
-	fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.ExeName, p.ExeBytes)
+	fmt.Fprintf(w, "<h1>Filename: %s</h1><div><p style=\"color:blue;\">Sha256: %s</p></div><div>Bytes: %s</div>", p.ExeName, p.ExeSha256, p.ExeBytes)
 }
 
 func loadExe(name string) (*exe_upload.ExeUpload, error) {
 
-	data, err := os.ReadFile("/Users/debjo/GitHub/vt-design/go/bin/" + name)
+	ep := new(exe_upload.ExeUpload)
+
+	// Set the file name
+	ep.ExeName = "/Users/debjo/GitHub/vt-design/go/bin/" + name
+
+	// Get the file bytes
+	data, err := os.ReadFile(ep.ExeName)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	ep := new(exe_upload.ExeUpload)
 	ep.ExeBytes = make([]byte, len(data))
 	n := copy(ep.ExeBytes, data)
 	if n != len(data) {
 		log.Fatal(err)
 	}
-	ep.ExeName = name
+
+	// Get the file hash signature
+	f, err := os.Open(ep.ExeName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	h := sha256.New()
+	if _, err := io.Copy(h, f); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%x", h.Sum(nil))
+
+	ep.ExeSha256 = make([]byte, len(h.Sum(nil)))
+	copy(ep.ExeSha256, h.Sum(nil))
 
 	return ep, nil
 }
