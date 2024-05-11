@@ -18,17 +18,23 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	object_name := r.URL.Path[len("/upload/"):]
 	p, _ := loadExe(object_name)
-	fmt.Fprintf(w, "<h1>Filename: %s</h1><div><p style=\"color:blue;\">Sha256: %s</p></div><div>Bytes: %s</div>", p.ExeName, p.ExeSha256, p.ExeBytes)
+	fmt.Fprintf(w, "<p style=\"color:green;\">Filename: %s</p><div><p style=\"color:blue;\">Sha256: %s</p></div><div><p style=\"color:black;\">Bytes:</p> <p style=\"color:gray;\">%s</p></div>", p.ExeName, p.ExeSha256, p.ExeBytes)
 }
 
 func loadExe(name string) (*exe_upload.ExeUpload, error) {
 
 	ep := new(exe_upload.ExeUpload)
 
+	//
 	// Set the file name
+	//
+
 	ep.ExeName = "/Users/debjo/GitHub/vt-design/go/bin/" + name
 
-	// Get the file bytes
+	//
+	// Set the file bytes
+	//
+
 	data, err := os.ReadFile(ep.ExeName)
 	if err != nil {
 		log.Fatal(err)
@@ -40,7 +46,10 @@ func loadExe(name string) (*exe_upload.ExeUpload, error) {
 		log.Fatal(err)
 	}
 
-	// Get the file hash signature
+	//
+	// Set the file hash signature
+	//
+
 	f, err := os.Open(ep.ExeName)
 	if err != nil {
 		log.Fatal(err)
@@ -51,7 +60,6 @@ func loadExe(name string) (*exe_upload.ExeUpload, error) {
 	if _, err := io.Copy(h, f); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("%x", h.Sum(nil))
 
 	ep.ExeSha256 = make([]byte, len(h.Sum(nil)))
 	copy(ep.ExeSha256, h.Sum(nil))
