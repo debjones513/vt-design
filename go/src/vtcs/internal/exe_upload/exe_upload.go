@@ -17,7 +17,8 @@ func (eu *ExeUpload) SetExeName(name string) error {
 
 	// Set the file name
 
-	eu.ExeName = "/Users/debjo/GitHub/vt-design/go/bin/" + name
+	//eu.ExeName = "/Users/debjo/GitHub/vt-design/go/bin/" + name
+	eu.ExeName = name
 
 	return nil
 }
