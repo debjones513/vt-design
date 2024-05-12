@@ -9,6 +9,8 @@ import (
 
 const FmtDefaultHandler string = `
 <div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running %s! </b> </p> </div>
+<div> <p style="color:green;"> &nbsp; &nbsp; To test: http://localhost:8080/upload/vtserver_test </p> </div>
+
 `
 
 const FmtUploadHandler string = `
