@@ -7,6 +7,10 @@ import (
 	"vt-design/go/src/vtcs/internal/exe_upload"
 )
 
+const FmtDefaultHandler string = `
+<div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running %s! </b> </p> </div>
+`
+
 const FmtUploadHandler string = `
 <div> <p style="color:green;"> &nbsp; &nbsp; <b> Filename </b> </p>   <p style="color:green;"> &nbsp; &nbsp; %s </p> </div>
 <div> <p style="color:blue;">  &nbsp; &nbsp; <b> Sha256   </b> </p>   <p style="color:blue;">  &nbsp; &nbsp; %x </p> </div>
@@ -14,7 +18,7 @@ const FmtUploadHandler string = `
 `
 
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Web server is running %s!", r.URL.Path[1:])
+	fmt.Fprintf(w, FmtDefaultHandler, r.URL.Path[1:])
 }
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
