@@ -19,7 +19,7 @@ func main() {
 
 	eu.SetExeName(test_file)
 
-	// Ionvert eu to JSON
+	// Convert eu to JSON
 
 	jsonData, err := json.Marshal(eu)
 	if err != nil {
