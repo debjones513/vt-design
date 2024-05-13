@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"vt-design/go/src/vtcs/internal/exe_upload"
@@ -31,22 +31,21 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
-	object_name := r.URL.Path[len("/upload/"):]
+	object_name := "/Users/debjo/GitHub/vt-design/go/bin/" + r.URL.Path[len("/upload/"):]
 
 	eu, err := loadExeOrUrl(object_name)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)
-		log.Fatal(err)
 		return
 	}
 
 	fmt.Fprintf(w, FmtUploadHandler, eu.ExeName, eu.ExeSha256, eu.ExeBytes)
 }
 
-func uploadHandler2(w http.ResponseWriter, r *http.Request) {
+func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Read body
-	b, err := ioutil.ReadAll(r.Body)
+	b, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -64,14 +63,13 @@ func uploadHandler2(w http.ResponseWriter, r *http.Request) {
 	eu, err := loadExeOrUrl(req.ExeName)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)
-		log.Fatal(err)
 		return
 	}
 
 	fmt.Fprintf(w, FmtUploadHandler, eu.ExeName, eu.ExeSha256, eu.ExeBytes)
 
-	/* 	// Marshall the struct into a response
-	output, err := json.Marshal(msg)
+	/* Marshall the struct into a response
+	output, err := json.Marshal(eu)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
@@ -84,6 +82,9 @@ func uploadHandler2(w http.ResponseWriter, r *http.Request) {
 func loadExeOrUrl(object_name string) (*exe_upload.ExeUpload, error) {
 
 	eu, err := exe_upload.Init(object_name)
+	if err != nil {
+		fmt.Println(err)
+	}
 	return eu, err
 }
 
@@ -92,6 +93,7 @@ func main() {
 	// Start the web server
 
 	http.HandleFunc("/", defaultHandler)
-	http.HandleFunc("/upload/", uploadHandler2)
+	http.HandleFunc("/upload/", uploadHandler)
+	http.HandleFunc("/upload/api/", uploadApiHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil)) // http://localhost:8080/
 }

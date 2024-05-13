@@ -2,8 +2,8 @@ package exe_upload
 
 import (
 	"crypto/sha256"
+	"fmt"
 	"io"
-	"log"
 	"os"
 )
 
@@ -29,14 +29,14 @@ func (eu *ExeUpload) SetExeBytes() error {
 
 	data, err := os.ReadFile(eu.ExeName)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return err
 	}
 
 	eu.ExeBytes = make([]byte, len(data))
 	n := copy(eu.ExeBytes, data)
 	if n != len(data) {
-		log.Fatal(err)
+		fmt.Println(err)
 		return err
 	}
 
@@ -49,7 +49,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 
 	f, err := os.Open(eu.ExeName)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return err
 	}
 	defer f.Close()
@@ -59,7 +59,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 	h := sha256.New()
 	_, err = io.Copy(h, f)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return err
 	}
 
@@ -68,7 +68,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 	eu.ExeSha256 = make([]byte, len(h.Sum(nil)))
 	n := copy(eu.ExeSha256, h.Sum(nil))
 	if !(n > 0) {
-		log.Fatal(io.EOF)
+		fmt.Println(io.EOF)
 		return io.EOF
 	}
 
@@ -83,19 +83,19 @@ func Init(name string) (*ExeUpload, error) {
 
 	err = eu.SetExeName(name)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return eu, err
 	}
 
 	err = eu.SetExeBytes()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return eu, err
 	}
 
 	err = eu.SetExeSha256()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 		return eu, err
 	}
 

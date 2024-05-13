@@ -12,7 +12,7 @@ import (
 func main() {
 
 	var eu exe_upload.ExeUpload
-	var url = "http://localhost:8080/upload/vtserver_test"
+	var url = "http://localhost:8080/upload/api/vtserver_test"
 	var test_file = "/Users/debjo/GitHub/vt-design/go/bin/vtserver_test"
 
 	// Input the exe name
