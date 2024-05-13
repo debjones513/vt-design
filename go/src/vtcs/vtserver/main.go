@@ -45,6 +45,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Read body
+
 	b, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	if err != nil {
@@ -53,6 +54,7 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Unmarshal
+
 	var req exe_upload.ExeUpload
 	err = json.Unmarshal(b, &req)
 	if err != nil {
