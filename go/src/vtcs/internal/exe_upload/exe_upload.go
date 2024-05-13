@@ -13,6 +13,61 @@ type ExeUpload struct {
 	ExeSha256 []byte
 }
 
+// https://aws.github.io/aws-sdk-go-v2/docs/making-requests/
+// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2
+// https://github.com/aws/aws-sdk-go-v2/blob/example/service/s3/listObjects/v0.2.9/example/service/s3/listObjects/listObjects.go
+// https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_Scenario_PresignedUrl_section.html
+// https://ronen-niv.medium.com/aws-s3-handling-presigned-urls-2718ab247d57
+
+/*
+https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/s3#PutObjectInput
+
+
+func putPresignURL(cfg aws.Config) string {
+
+s3client := s3.NewFromConfig(cfg)
+ presignClient := s3.NewPresignClient(s3client)
+
+ presignedUrl, err := presignClient.PresignPutObject(context.Background(),
+  &s3.PutObjectInput{
+   Bucket: aws.String(bucketName),
+   Key:    aws.String(objectName),
+  },
+  s3.WithPresignExpires(time.Minute*15))
+ if err != nil {
+  log.Fatal(err)
+ }
+
+ return presignedUrl.URL
+}
+
+
+func uploadFile(filePath string, url string) error {
+
+ file, err := os.Open(filePath)
+ if err != nil {
+  return err
+ }
+ defer file.Close()
+
+ buffer := bytes.NewBuffer(nil)
+ if _, err := io.Copy(buffer, file); err != nil {
+  return err
+ }
+
+ request, err := http.NewRequest(http.MethodPut, url, buffer)
+ if err != nil {
+  return err
+ }
+
+ request.Header.Set("Content-Type", "multipart/form-data")
+ client := &http.Client{}
+ _, err = client.Do(request)
+ return err
+}
+
+*/
+
 func (eu *ExeUpload) SetExeName(name string) error {
 
 	// Set the file name

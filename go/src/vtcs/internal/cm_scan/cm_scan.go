@@ -13,6 +13,8 @@ const CloudMersiveScanUrl string = "https://api.cloudmersive.com/virus/scan/clou
 
 func Scan() {
 
+	// https://api.cloudmersive.com/go-client.asp
+
 	url := CloudMersiveScanUrl
 	method := "POST"
 
