@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+
 	echo(os.Args)
 	fileOpen(os.Args)
 	findDups()
@@ -13,10 +14,9 @@ func main() {
 
 func echo(args []string) {
 
-	sep := ""
-
-	for index, value := range os.Args {
-		value += sep + os.Args[index]
+	s, sep := "", ""
+	for _, value := range os.Args {
+		s += sep + value
 		sep = " "
 	}
 
@@ -24,13 +24,15 @@ func echo(args []string) {
 }
 
 func check(s string, err error) {
+
 	if err != nil {
-		fmt.Println("%s Error: %s", s, err)
+		fmt.Printf("%s Error: %v", s, err)
 	}
 	return
 }
 
 func fileOpen(args []string) {
+
 	var err error
 	var n int
 	var f *os.File
@@ -56,6 +58,7 @@ func fileOpen(args []string) {
 }
 
 func findDups() {
+
 	s := ""
 	counts := make(map[string]int)
 

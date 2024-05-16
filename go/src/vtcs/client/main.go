@@ -10,6 +10,7 @@ import (
 )
 
 func failed(s string, err error) bool {
+
 	if err != nil {
 		fmt.Printf("Location: %s Error: %s", s, err)
 		return true

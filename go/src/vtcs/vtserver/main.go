@@ -32,6 +32,7 @@ const FmtUploadHandler string = `
 `
 
 func failed(s string, err error) bool {
+
 	if err != nil {
 		fmt.Printf("Location: %s Error: %s", s, err)
 		return true
@@ -81,6 +82,7 @@ func uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Load the response
+
 	eu, err := loadExeOrURL(resp.ExeName)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)

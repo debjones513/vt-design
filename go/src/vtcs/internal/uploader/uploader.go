@@ -77,6 +77,7 @@ func uploadFile(filePath string, url string) error {
 */
 
 func failed(s string, err error) bool {
+
 	if err != nil {
 		fmt.Printf("Location: %s Error: %s", s, err)
 		return true
@@ -107,7 +108,7 @@ func (eu *ExeUpload) SetExeBytes() error {
 	eu.ExeBytes = make([]byte, len(data))
 	n := copy(eu.ExeBytes, data)
 	if n != len(data) {
-		fmt.Printf("Copy", err)
+		fmt.Printf("Copy %v", err)
 		return err
 	}
 
@@ -138,7 +139,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 	eu.ExeSha256 = make([]byte, len(h.Sum(nil)))
 	n := copy(eu.ExeSha256, h.Sum(nil))
 	if !(n > 0) {
-		fmt.Printf("copy", io.EOF)
+		fmt.Printf("copy %v", io.EOF)
 		return io.EOF
 	}
 

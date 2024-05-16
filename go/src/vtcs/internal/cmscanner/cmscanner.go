@@ -6,7 +6,6 @@ package cmscanner
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 )
 
@@ -16,6 +15,7 @@ const cloudMersiveScanURL string = "https://api.cloudmersive.com/virus/scan/clou
 // const CloudMersiveKeysUrl string = "https://portal.cloudmersive.com/keys"
 
 func failed(s string, err error) bool {
+
 	if err != nil {
 		fmt.Printf("Location: %s Error: %s", s, err)
 		return true
@@ -50,8 +50,9 @@ func Scan() error {
 	}
 	defer res.Body.Close()
 
-	body, err := io.ReadAll(res.Body)
-	if failed("io.ReadAll", err) {
-		return err
-	}
+	//body, err := io.ReadAll(res.Body)
+	//if failed("io.ReadAll", err) {
+	//	return err
+	//}
+	return nil
 }
