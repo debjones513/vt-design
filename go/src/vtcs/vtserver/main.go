@@ -6,7 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"vt-design/go/src/vtcs/internal/exe_upload"
+	"vt-design/go/src/vtcs/internal/exeupload"
 )
 
 const FmtDefaultHandler string = `
@@ -55,7 +55,7 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Unmarshal
 
-	var req exe_upload.ExeUpload
+	var req exeupload.ExeUpload
 	err = json.Unmarshal(b, &req)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -81,9 +81,9 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 	*/
 }
 
-func loadExeOrUrl(object_name string) (*exe_upload.ExeUpload, error) {
+func loadExeOrUrl(object_name string) (*exeupload.ExeUpload, error) {
 
-	eu, err := exe_upload.Init(object_name)
+	eu, err := exeupload.Initialize(object_name)
 	if err != nil {
 		fmt.Println(err)
 	}

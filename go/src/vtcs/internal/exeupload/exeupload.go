@@ -1,4 +1,4 @@
-package upload
+package exeupload
 
 import (
 	"crypto/sha256"
@@ -133,7 +133,8 @@ func (eu *ExeUpload) SetExeSha256() error {
 	return nil
 }
 
-func Init(name string) (*ExeUpload, error) {
+// Initialize initializes an ExeUpload object.
+func Initialize(name string) (*ExeUpload, error) {
 
 	var err error
 
