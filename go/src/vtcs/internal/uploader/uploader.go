@@ -10,11 +10,15 @@ import (
 	"os"
 )
 
-// ExeUpload identifies a binary by name and signature. It includes the bianry's bytes.
+// ExeUpload identifies a binary by name and signature. It includes the binary's
+// bytes as a byte array.
+// An empty string for ExeName is an uninitialized structure.
+// If the stricture is initialized, ExeBytes and ExeSha256 are assumed to be of
+// length greater than 0.
 type ExeUpload struct {
-	ExeName   string
-	ExeBytes  []byte
-	ExeSha256 []byte
+	ExeName   string // The executable's filename
+	ExeBytes  []byte // The executable's bytes
+	ExeSha256 []byte // The SHA256 for the executable's bytes
 }
 
 // https://aws.github.io/aws-sdk-go-v2/docs/making-requests/

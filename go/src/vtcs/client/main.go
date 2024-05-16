@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"vt-design/go/src/vtcs/internal/exeupload"
+	"vt-design/go/src/vtcs/internal/uploader"
 )
 
 func main() {
 
-	var eu exeupload.ExeUpload
+	var eu uploader.ExeUpload
 	var url = "http://localhost:8080/upload/api/vtserver_test"
 	var testFile = "/Users/debjo/GitHub/vt-design/go/bin/vtserver_test"
 

@@ -1,3 +1,21 @@
+/*
+Vtserver runs a virus scan on a binary.
+It stores the binary in S3, and uses third party scanners.
+
+The Usage statement below shows how a cmd line app comment should be formatted.
+Usage:
+
+	my_cmd line [flags] [path ...]
+
+The flags are:
+
+	-d
+	    Do not ...
+	-w
+	    If ...
+
+Replace the text above with vtserver info.
+*/
 package main
 
 import (
@@ -6,7 +24,7 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"vt-design/go/src/vtcs/internal/exeupload"
+	"vt-design/go/src/vtcs/internal/uploader"
 )
 
 const FmtDefaultHandler string = `
@@ -55,14 +73,14 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Unmarshal
 
-	var req exeupload.ExeUpload
-	err = json.Unmarshal(b, &req)
+	var eu uploader.ExeUpload
+	err = json.Unmarshal(b, &eu)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	eu, err := loadExeOrUrl(req.ExeName)
+	eu, err := loadExeOrUrl(eu.ExeName)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)
 		return
@@ -87,6 +105,8 @@ func loadExeOrUrl(object_name string) (*exeupload.ExeUpload, error) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	//cmscanner.Scan()
 	return eu, err
 }
 

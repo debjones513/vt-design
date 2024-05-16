@@ -1,6 +1,7 @@
 // Package cmscanner implements utility routines for using Cloud Mersive to scan a binary
 //
-// Uploaded binaries are retained forever.
+// Uploaded binaries are retained forever. The file must be uploaded to S3.
+// To upload files, see package [uploader]
 package cmscanner
 
 import (
