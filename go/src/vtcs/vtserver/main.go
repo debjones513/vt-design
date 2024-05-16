@@ -1,20 +1,6 @@
 /*
 Vtserver runs a virus scan on a binary.
 It stores the binary in S3, and uses third party scanners.
-
-The Usage statement below shows how a cmd line app comment should be formatted.
-Usage:
-
-	my_cmd line [flags] [path ...]
-
-The flags are:
-
-	-d
-	    Do not ...
-	-w
-	    If ...
-
-Replace the text above with vtserver info.
 */
 package main
 
@@ -27,31 +13,36 @@ import (
 	"vt-design/go/src/vtcs/internal/uploader"
 )
 
+// FmtDefaultHandler is the HTML for default web server handler
 const FmtDefaultHandler string = `
 <div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running %s! </b> </p> </div>
 <div> <p style="color:green;"> &nbsp; &nbsp; To test: http://localhost:8080/upload/vtserver_test </p> </div>
 `
 
+// FmtDefaultErrorHandler is the HTML for default web server error handler
 const FmtDefaultErrorHandler string = `
 <div> <p style="color:red;"> &nbsp; &nbsp; <b> ERROR! </b> </p> </div>
 `
 
+// FmtUploadHandler is the HTML for web server upload handler
 const FmtUploadHandler string = `
 <div> <p style="color:green;"> &nbsp; &nbsp; <b> Filename </b> </p>   <p style="color:green;"> &nbsp; &nbsp; %s </p> </div>
 <div> <p style="color:blue;">  &nbsp; &nbsp; <b> Sha256   </b> </p>   <p style="color:blue;">  &nbsp; &nbsp; %x </p> </div>
 <div> <p style="color:black;"> &nbsp; &nbsp; <b> Bytes    </b> </p>   <p style="color:gray;">  &nbsp; &nbsp; %x </p> </div>
 `
 
+// Default web server handler
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, FmtDefaultHandler, r.URL.Path[1:])
 }
 
+// Web server upload handler
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
-	object_name := "/Users/debjo/GitHub/vt-design/go/bin/" + r.URL.Path[len("/upload/"):]
+	objectName := "/Users/debjo/GitHub/vt-design/go/bin/" + r.URL.Path[len("/upload/"):]
 
-	eu, err := loadExeOrUrl(object_name)
+	eu, err := loadExeOrURL(objectName)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)
 		return
@@ -60,7 +51,8 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, FmtUploadHandler, eu.ExeName, eu.ExeSha256, eu.ExeBytes)
 }
 
-func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
+// API upload handler
+func uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Read body
 
@@ -81,7 +73,7 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Load the response
-	eu, err := loadExeOrUrl(resp.ExeName)
+	eu, err := loadExeOrURL(resp.ExeName)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)
 		return
@@ -100,9 +92,9 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 	*/
 }
 
-func loadExeOrUrl(object_name string) (*uploader.ExeUpload, error) {
+func loadExeOrURL(objectName string) (*uploader.ExeUpload, error) {
 
-	eu, err := uploader.Initialize(object_name)
+	eu, err := uploader.Initialize(objectName)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -117,6 +109,6 @@ func main() {
 
 	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/upload/", uploadHandler)
-	http.HandleFunc("/upload/api/", uploadApiHandler)
+	http.HandleFunc("/upload/api/", uploadAPIHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil)) // http://localhost:8080/
 }
