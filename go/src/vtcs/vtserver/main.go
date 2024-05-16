@@ -71,16 +71,17 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Unmarshal
+	// Unmarshal to get the binary name
 
-	var eu uploader.ExeUpload
-	err = json.Unmarshal(b, &eu)
+	var resp uploader.ExeUpload
+	err = json.Unmarshal(b, &resp)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	eu, err := loadExeOrUrl(eu.ExeName)
+	// Load the response
+	eu, err := loadExeOrUrl(resp.ExeName)
 	if err != nil {
 		fmt.Fprintf(w, FmtDefaultErrorHandler)
 		return
@@ -99,9 +100,9 @@ func uploadApiHandler(w http.ResponseWriter, r *http.Request) {
 	*/
 }
 
-func loadExeOrUrl(object_name string) (*exeupload.ExeUpload, error) {
+func loadExeOrUrl(object_name string) (*uploader.ExeUpload, error) {
 
-	eu, err := exeupload.Initialize(object_name)
+	eu, err := uploader.Initialize(object_name)
 	if err != nil {
 		fmt.Println(err)
 	}
