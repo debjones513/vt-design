@@ -1,4 +1,7 @@
-package exeupload
+// Package uploader implements utility routines for uploading binaries to S3.
+//
+// Uploaded binaries are retained forever.
+package uploader
 
 import (
 	"crypto/sha256"

@@ -1,4 +1,7 @@
-package cmscan
+// Package cmscanner implements utility routines for using Cloud Mersive to scan a binary
+//
+// Uploaded binaries are retained forever.
+package cmscanner
 
 import (
 	"fmt"
