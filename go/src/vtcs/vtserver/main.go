@@ -31,6 +31,14 @@ const FmtUploadHandler string = `
 <div> <p style="color:black;"> &nbsp; &nbsp; <b> Bytes    </b> </p>   <p style="color:gray;">  &nbsp; &nbsp; %x </p> </div>
 `
 
+func failed(s string, err error) bool {
+	if err != nil {
+		fmt.Printf("Location: %s Error: %s", s, err)
+		return true
+	}
+	return false
+}
+
 // Default web server handler
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -95,8 +103,8 @@ func uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 func loadExeOrURL(objectName string) (*uploader.ExeUpload, error) {
 
 	eu, err := uploader.Initialize(objectName)
-	if err != nil {
-		fmt.Println(err)
+	if failed("uploader.Initialize", err) {
+		return eu, err
 	}
 
 	//cmscanner.Scan()

@@ -15,8 +15,16 @@ const cloudMersiveScanURL string = "https://api.cloudmersive.com/virus/scan/clou
 
 // const CloudMersiveKeysUrl string = "https://portal.cloudmersive.com/keys"
 
+func failed(s string, err error) bool {
+	if err != nil {
+		fmt.Printf("Location: %s Error: %s", s, err)
+		return true
+	}
+	return false
+}
+
 // Scan a binary or URL
-func Scan() {
+func Scan() error {
 
 	// https://api.cloudmersive.com/go-client.asp
 
@@ -25,10 +33,10 @@ func Scan() {
 
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, nil)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if failed("http.NewRequest", err) {
+		return err
 	}
+
 	req.Header.Add("accessKey", "")
 	req.Header.Add("secretKey", "")
 	req.Header.Add("bucketRegion", "")
@@ -37,16 +45,13 @@ func Scan() {
 	req.Header.Add("Apikey", cloudMersiveAPIKey)
 
 	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if failed("client.Do", err) {
+		return err
 	}
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if failed("io.ReadAll", err) {
+		return err
 	}
-	fmt.Println(string(body))
 }

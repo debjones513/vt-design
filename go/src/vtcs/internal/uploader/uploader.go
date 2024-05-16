@@ -76,6 +76,14 @@ func uploadFile(filePath string, url string) error {
 
 */
 
+func failed(s string, err error) bool {
+	if err != nil {
+		fmt.Printf("Location: %s Error: %s", s, err)
+		return true
+	}
+	return false
+}
+
 // SetExeName copies the executable name into a string.
 func (eu *ExeUpload) SetExeName(name string) error {
 
@@ -92,15 +100,14 @@ func (eu *ExeUpload) SetExeBytes() error {
 	// Set the file bytes - TODO for a big file, this will consume memory
 
 	data, err := os.ReadFile(eu.ExeName)
-	if err != nil {
-		fmt.Println(err)
+	if failed("os.ReadFile", err) {
 		return err
 	}
 
 	eu.ExeBytes = make([]byte, len(data))
 	n := copy(eu.ExeBytes, data)
 	if n != len(data) {
-		fmt.Println(err)
+		fmt.Printf("Copy", err)
 		return err
 	}
 
@@ -113,8 +120,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 	// Set the file hash signature
 
 	f, err := os.Open(eu.ExeName)
-	if err != nil {
-		fmt.Println(err)
+	if failed("os.Open", err) {
 		return err
 	}
 	defer f.Close()
@@ -123,8 +129,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 
 	h := sha256.New()
 	_, err = io.Copy(h, f)
-	if err != nil {
-		fmt.Println(err)
+	if failed("io.Copy", err) {
 		return err
 	}
 
@@ -133,7 +138,7 @@ func (eu *ExeUpload) SetExeSha256() error {
 	eu.ExeSha256 = make([]byte, len(h.Sum(nil)))
 	n := copy(eu.ExeSha256, h.Sum(nil))
 	if !(n > 0) {
-		fmt.Println(io.EOF)
+		fmt.Printf("copy", io.EOF)
 		return io.EOF
 	}
 
@@ -148,20 +153,17 @@ func Initialize(name string) (*ExeUpload, error) {
 	eu := new(ExeUpload)
 
 	err = eu.SetExeName(name)
-	if err != nil {
-		fmt.Println(err)
-		return eu, err
-	}
-
-	err = eu.SetExeBytes()
-	if err != nil {
-		fmt.Println(err)
+	if failed("SetExeName", err) {
 		return eu, err
 	}
 
 	err = eu.SetExeSha256()
-	if err != nil {
-		fmt.Println(err)
+	if failed("SetExeSha256", err) {
+		return eu, err
+	}
+
+	err = eu.SetExeBytes()
+	if failed("SetExeBytes", err) {
 		return eu, err
 	}
 
