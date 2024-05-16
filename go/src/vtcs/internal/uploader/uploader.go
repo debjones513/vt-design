@@ -150,7 +150,6 @@ func (eu *ExeUpload) SetExeSha256() error {
 func Initialize(name string) (*ExeUpload, error) {
 
 	var err error
-
 	eu := new(ExeUpload)
 
 	err = eu.SetExeName(name)
