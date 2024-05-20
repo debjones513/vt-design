@@ -43,8 +43,12 @@ https://stackoverflow.com/questions/36732875/cant-connect-to-public-ip-for-ec2-i
 env GOOS=linux GOARCH=386  go build
 
 # Upload
-Deborahs-iMac:~ debjo$ scp -i ".ssh/vtserver-key-ED25519.pem" ~/vtserver  ec2-user@ec2-34-223-223-68.us-west-2.compute.amazonaws.com:linux_binary/vtserver  
+Deborahs-iMac:~ debjo$ scp -i ".ssh/vtserver-key-ED25519.pem" ~/vtserver  ec2-user@ec2-44-234-131-118.us-west-2.compute.amazonaws.com:linux_binary/vtserver  
+vtserver  
+
+Deborahs-iMac:~ debjo$ scp -i "vtserver-key-ED25519.pem" ~/vtserver  ec2-user@ec2-44-234-131-118.us-west-2.compute.amazonaws.com:linux_binary/vtserver  
 vtserver
+
 
 
 # To SSH
