@@ -22,7 +22,8 @@ func main() {
 
 	var eu uploader.ExeUpload
 	var url = "http://localhost:8080/upload/api/vtserver_test"
-	var testFile = "/Users/debjo/GitHub/vt-design/go/bin/vtserver_test"
+	//var testFile = "/Users/debjo/GitHub/vt-design/go/bin/vtserver_test"
+	var testFile = "./vtserver_test"
 
 	// Input the exe name
 

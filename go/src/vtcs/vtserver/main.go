@@ -15,8 +15,8 @@ import (
 
 // FmtDefaultHandler is the HTML for default web server handler
 const FmtDefaultHandler string = `
-<div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running %s! </b> </p> </div>
-<div> <p style="color:green;"> &nbsp; &nbsp; To test: http://localhost:8080/upload/vtserver_test </p> </div>
+<div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running! </b> </p> </div>
+<div> <p style="color:green;"> &nbsp; &nbsp; To test on AWS EC2: http://44.234.131.118:8080/upload/vtserver_test </p> </div>
 `
 
 // FmtDefaultErrorHandler is the HTML for default web server error handler
@@ -49,7 +49,8 @@ func defaultHandler(w http.ResponseWriter, r *http.Request) {
 // Web server upload handler
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
-	objectName := "/Users/debjo/GitHub/vt-design/go/bin/" + r.URL.Path[len("/upload/"):]
+	// On AWS EC2, vtserver runs in <user home>, the test file is in <user home>
+	objectName := "./" + r.URL.Path[len("/upload/"):]
 
 	eu, err := loadExeOrURL(objectName)
 	if err != nil {
@@ -120,5 +121,6 @@ func main() {
 	http.HandleFunc("/", defaultHandler)
 	http.HandleFunc("/upload/", uploadHandler)
 	http.HandleFunc("/upload/api/", uploadAPIHandler)
+	//log.Fatal(http.ListenAndServe(":443", nil)) // http://localhost:443/
 	log.Fatal(http.ListenAndServe(":8080", nil)) // http://localhost:8080/
 }
