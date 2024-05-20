@@ -15,7 +15,7 @@ import (
 
 // FmtDefaultHandler is the HTML for default web server handler
 const FmtDefaultHandler string = `
-<div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running! </b> </p> </div>
+<div> <p style="color:green;"> &nbsp; &nbsp; <b> Web server is running!</b> </p> </div>
 <div> <p style="color:green;"> &nbsp; &nbsp; To test on AWS EC2: http://44.234.131.118:8080/upload/vtserver_test </p> </div>
 `
 
@@ -43,7 +43,8 @@ func failed(s string, err error) bool {
 // Default web server handler
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprintf(w, FmtDefaultHandler, r.URL.Path[1:])
+	//fmt.Fprintf(w, FmtDefaultHandler, r.URL.Path[1:])
+	fmt.Fprintf(w, FmtDefaultHandler)
 }
 
 // Web server upload handler

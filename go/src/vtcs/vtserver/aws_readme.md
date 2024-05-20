@@ -1,5 +1,7 @@
 # Connect Issues
-https://stackoverflow.com/questions/36732875/cant-connect-to-public-ip-for-ec2-instance
+https://stackoverflow.com/questions/36732875/cant-connect-to-public-ip-for-ec2-instance  
+
+If my Mac's IP changes, I have to update the firewall rule for the instance, or set it to 0.0.0.0/0
 
 To see what app is listening on a port  
 sudo netstat -tulpn | grep LISTEN
@@ -31,6 +33,11 @@ Sha256
     c449a93fb4598c689a895784a4ffe20cad0b8e2e0af6c204090cbf51e927330c    
 Bytes  
     7f454c460101010000000000000000000200030001000000c0 ...*
+
+
+### Resources
+https://www.cyberciti.biz/faq/unix-linux-check-if-port-is-in-use-command/
+https://stackoverflow.com/questions/36732875/cant-connect-to-public-ip-for-ec2-instance
 
 # Build
 env GOOS=linux GOARCH=386  go build
