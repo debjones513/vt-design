@@ -28,7 +28,7 @@ func check(s string, err error) {
 	if err != nil {
 		fmt.Printf("%s Error: %v", s, err)
 	}
-	return
+	os.Exit(1)
 }
 
 func fileOpen(args []string) {

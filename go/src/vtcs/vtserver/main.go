@@ -31,6 +31,7 @@ const FmtUploadHandler string = `
 <div> <p style="color:black;"> &nbsp; &nbsp; <b> Bytes    </b> </p>   <p style="color:gray;">  &nbsp; &nbsp; %x </p> </div>
 `
 
+// failed is an error handling util fn.
 func failed(s string, err error) bool {
 
 	if err != nil {
@@ -40,14 +41,14 @@ func failed(s string, err error) bool {
 	return false
 }
 
-// Default web server handler
+// defaultHandler  is the default web server handler
 func defaultHandler(w http.ResponseWriter, r *http.Request) {
 
 	//fmt.Fprintf(w, FmtDefaultHandler, r.URL.Path[1:])
 	fmt.Fprintf(w, FmtDefaultHandler)
 }
 
-// Web server upload handler
+// uploadHandler is the web server upload handler
 func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	// On AWS EC2, vtserver runs in <user home>, the test file is in <user home>
@@ -62,7 +63,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, FmtUploadHandler, eu.ExeName, eu.ExeSha256, eu.ExeBytes)
 }
 
-// API upload handler
+// uploadAPIHandler is the API upload handler
 func uploadAPIHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Read body
